@@ -1,8 +1,10 @@
 import pandas as pd
+import numpy as np
 from numba import jit
+from typing import List
 
 @jit(nopython=True)
-def _ops_roll_std_arr(ar, window_size):
+def _ops_roll_std_arr(ar: np.ndarray, window_size: int) -> List[List[float]]:
     '''
     Compute the rolling standard deviation per column of a NumPy array.
     
@@ -24,7 +26,7 @@ def _ops_roll_std_arr(ar, window_size):
         std_devs.append(win_std_devs)
     return std_devs
 
-def ops_roll_std(df: pd.DataFrame, window_size=5) -> pd.DataFrame:
+def ops_roll_std(df: pd.DataFrame, window_size: int) -> pd.DataFrame:
     '''
     Compute the rolling standard deviation per column of a pandas DataFrame.
     
@@ -71,7 +73,7 @@ def _spearman_correlation(x: np.ndarray, y: np.ndarray) -> float:
     return spearman_corr
 
 @jit(nopython=True)
-def _ops_roll_corr_arr(ar_1, ar_2, window_size):
+def _ops_roll_corr_arr(ar_1: np.ndarray, ar_2: np.ndarray, window_size: int) -> List[List[float]]:
     '''
     Compute the rolling Spearman correlation coefficient between two NumPy arrays.
     
@@ -80,7 +82,7 @@ def _ops_roll_corr_arr(ar_1, ar_2, window_size):
         y (np.ndarray): 2D Input array.
         
     Returns:
-        float: 2D array of Spearman correlation coefficient.
+        List[List[float]]: 2D array of Spearman correlation coefficient.
     '''
     n, d = ar_1.shape
     corrs = []
@@ -94,7 +96,7 @@ def _ops_roll_corr_arr(ar_1, ar_2, window_size):
         corrs.append(win_corrs)
     return corrs
 
-def ops_roll_corr(df_1: pd.DataFrame, df_2: pd.DataFrame, window_size=5) -> pd.DataFrame:
+def ops_roll_corr(df_1: pd.DataFrame, df_2: pd.DataFrame, window_size) -> pd.DataFrame:
     '''
     Compute the rolling Spearman correlation coefficient between two pandas DataFrames. 
     Returns:

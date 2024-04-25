@@ -1,4 +1,5 @@
 import torch
+import pandas as pd
 
 # Fixed hyperparameters
 n_hid_units = 512
@@ -32,3 +33,19 @@ SIZE_FEATURE = len(FEATURES)
 SIZE_SEP = len(SEP)
 
 SIZE_ACTION = SIZE_BEG + SIZE_UNARY + SIZE_BINARY + SIZE_FEATURE + SIZE_SEP # = 14
+
+# Start indices of each action subset
+OFFSET_BEG = 0
+OFFSET_UNARY = OFFSET_BEG + SIZE_BEG # = 1
+OFFSET_BINARY = OFFSET_UNARY + SIZE_UNARY # = 4
+OFFSET_FEATURE = OFFSET_BINARY + SIZE_BINARY # = 9
+OFFSET_SEP = OFFSET_FEATURE + SIZE_FEATURE # = 14
+
+## Import data
+FOWARD_RETURN = pd.read_csv("../data/processed/ForwardReturn.csv", index_col=0)
+OPEN = pd.read_csv("../data/processed/Open.csv", index_col=0)
+CLOSE = pd.read_csv("../data/processed/Close.csv", index_col=0)
+HIGH = pd.read_csv("../data/processed/High.csv", index_col=0)
+LOW = pd.read_csv("../data/processed/Low.csv", index_col=0)
+VOLUME = pd.read_csv("../data/processed/Volume.csv", index_col=0)
+FEATURE_DATA = {"$open": OPEN, "$close": CLOSE, "$high": HIGH, "$low": LOW, "$volume": VOLUME}

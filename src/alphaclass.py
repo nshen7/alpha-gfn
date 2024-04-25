@@ -6,14 +6,8 @@ import pandas as pd
 import torch
 import torch.nn as nn
 from torch import Tensor
+from utils import ops_roll_std, ops_roll_corr
 
-
-# Start indices of each action subset
-OFFSET_BEG = 0
-OFFSET_UNARY = OFFSET_BEG + SIZE_BEG # = 1
-OFFSET_BINARY = OFFSET_UNARY + SIZE_UNARY # = 4
-OFFSET_FEATURE = OFFSET_BINARY + SIZE_BINARY # = 9
-OFFSET_SEP = OFFSET_FEATURE + SIZE_FEATURE # = 14
 
 class AlphaGFN():
     '''
@@ -147,7 +141,7 @@ class AlphaGFN():
             elif token == "ops_log":
                 res = operand.apply(np.log)
             elif token == "ops_roll_std":
-                res = rd.ts_std(operand, window=self.window_size)
+                res = ops_roll_std(operand, window_size=self.window_size)
             else:
                 ValueError()
             self.stack.append(res)
@@ -165,7 +159,7 @@ class AlphaGFN():
             elif token == "ops_divide":
                 res = operand_1 / operand_2
             elif token == "ops_roll_corr":
-                res = rd.ts_corr(operand_1, operand_2, d=self.window_size)
+                res = ops_roll_corr(operand_1, operand_2, window_size=self.window_size)
             else:
                 ValueError()
             self.stack.append(res)
