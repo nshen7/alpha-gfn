@@ -1,6 +1,12 @@
 # `Alpha-gfn`: Mining formulaic alpha factors with generative flow networks
 
-In this repo, we build an demo application that leverages a deep reinforcement learning framework to mine formulaic alpha factors using generative flow network models (i.e., GFlowNet). We give a brief introduction on the fundamental components of the project by answering the following questions. 
+In this repo, we build an application that leverages a deep reinforcement learning framework to mine formulaic alpha factors using generative flow network models (i.e., GFlowNet). Due to industrial NDA, this repo only serves for demonstration purposes; hence, it only includes a simple example using a small amount of training data. 
+
+We give a brief introduction on the fundamental components of the project by answering the following questions. 
+- What are formulaic alpha factors and why search for them?
+- Basic components of reinforcement learning？
+- What are GFlowNet models?
+- Why GFlowNet?
 
 ### What are formulaic alpha factors and why search for them?
 
@@ -99,7 +105,7 @@ The reward is defined as the squared information correlation (IC) between the ne
 
 To reiterate, the <ins>IC</ins> between the stock trend it aims to predict $y_t$ and the factor values $f(X_t)$ is defined as the *Spearman correlation* of $y_t$ and $f(X_t)$. Therefore, the reward given a generated alpha factor is:
 
-$$R(X) = \frac{1}{T}\sum_{t=1}^{T} Corr_{spearman}(f(X_t), y_t)^2 \times (1-\text{NaN}\%)$$
+$$R(X) = \frac{1}{T}\sum_{t=1}^{T} Corr_{spearman}(f(X_t), y_t)^2 \times (1-\text{NaN}\\%)$$
 
 
 ### Loss function
@@ -118,9 +124,18 @@ The motivation for the corresponding loss (again trying to match logarithms of t
 <img src="misc/figures/tbloss.png" alt="Example Image" width=400>
 </div>
 
-### Policy network <a name="policy"></a>
+### Policy networks <a name="policy"></a>
+
+Both forward and backward policies share a base two-layer LSTM feature extractor with positional encoding that converts token sequences into dense vector representations. See `src/models.py` for implementation details.
 
 ## Future Work
+
+There are assorted directions to extend this work. Here are some examples:
+
+1. Introduce more complicated operators into the model.
+1. Introduce parameters of the operator into the model as actions, such as time interval when computing rolling correlation.
+1. Improve the state representation that better captures the characteristic of the sampled alpha factors.
+1. Improve the reward definition by penalizing the between-factor dependence.
 
 
 ## References: <a name="references"></a>
