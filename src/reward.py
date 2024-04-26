@@ -35,6 +35,6 @@ def compute_log_reward(factor: pd.DataFrame) -> Tuple[float, float]:
     try:
         ic = _mean_rank_ic(factor, FOWARD_RETURN)
         # return ic, (2 * np.log(np.abs(ic))).clip(-100) 
-        return ic, (2 * np.log(np.abs(ic)) * nan_proportion).clip(-100)
+        return ic, (2 * np.log(np.abs(ic)) + np.log(1-nan_proportion)).clip(-100)
     except ValueError:
         return 0, -100
