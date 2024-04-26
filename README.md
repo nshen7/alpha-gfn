@@ -127,7 +127,6 @@ The motivation for the corresponding loss (again trying to match logarithms of t
 ### Policy networks <a name="policy"></a>
 
 Both forward and backward policies share a base two-layer LSTM feature extractor with positional encoding that converts token sequences into dense vector representations. See `src/models.py` for implementation details.
-∂
 
 
 ## References: <a name="references"></a>
