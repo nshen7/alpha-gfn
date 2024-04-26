@@ -127,15 +127,7 @@ The motivation for the corresponding loss (again trying to match logarithms of t
 ### Policy networks <a name="policy"></a>
 
 Both forward and backward policies share a base two-layer LSTM feature extractor with positional encoding that converts token sequences into dense vector representations. See `src/models.py` for implementation details.
-
-## Future Work
-
-There are assorted directions to extend this work. Here are some examples:
-
-1. Introduce more complicated operators into the model.
-1. Introduce parameters of the operator into the model as actions, such as time interval when computing rolling correlation.
-1. Improve the state representation that better captures the characteristic of the sampled alpha factors.
-1. Improve the reward definition by penalizing the between-factor dependence.
+∂
 
 
 ## References: <a name="references"></a>
@@ -149,3 +141,12 @@ There are assorted directions to extend this work. Here are some examples:
 1. Malkin, Nikolay, et al. "Trajectory balance: Improved credit assignment in GFlowNets." Advances in Neural Information Processing Systems 35 (2022): 5955-5967.
 
 - **Special thanks** to ChatGPT for helping to draft this README!!!
+
+## Session Info
+- Python 3.9.12
+- numpy 1.21.5  
+- pandas 1.4.2
+- torch 1.11.0
+- tqdm 4.64.0
+- scipy 1.7.3   
+- numba 0.55.1 
