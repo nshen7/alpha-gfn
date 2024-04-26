@@ -36,8 +36,8 @@ A GFlowNet is a trained stochastic policy or generative model, trained such that
 The word ‘flow’ in GFlowNet actually refers to unnormalized probabilities of an action given a state. The proposed approach views the probability assigned to an action given a state as the flow associated with a network whose nodes are states, and outgoing edges from that node are deterministic transitions driven by an action. The total flow into the network is the sum of the rewards in the terminal states (i.e., a partition function) and can be shown to be the flow at the root node (or start state). The proposed algorithm is inspired by Bellman updates and converges when the incoming and outgoing flow into and out of each state match. [[4]](references)
 
 <div style="text-align:center">
-<img src="misc/figures/gflownet_anim.gif" alt="Example Image" align="center" width=500>
-<figcaption>llustration of the flow network. Source: [1] </figcaption>
+<img src="misc/figures/gflownet_anim.gif" alt="Example Image" width=500>
+<figcaption>Source: [1] </figcaption>
 </div>
 
 \
@@ -46,9 +46,8 @@ A neural net can be used to sample each of these forward-going constructive acti
 PS: Reward can only be gained after reaching terminal state of a trajectory is the so-called *episodic setting* of RL.
 
 <div style="text-align:center">
-<img src="misc/figures/gfn-action.png" alt="Example Image" align="center">
-<figcaption>The most basic component of a GFlowNet. Source: [1] </figcaption>
-
+<img src="misc/figures/gfn-action.png" alt="Example Image">
+<figcaption>Source: [1] </figcaption>
 </div>
 
 ### Why GFlowNet?
