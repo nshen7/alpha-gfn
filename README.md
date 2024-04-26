@@ -114,8 +114,8 @@ $$
 
 The motivation for the corresponding loss (again trying to match logarithms of these products within a squared error form) is that it provides an immediate gradient to *all* the states visited in a complete trajectory (whether it was sampled forward from $s_0$ or backward from an $x$). The trajectory balance loss is hence formally defined as:
 
-<div style="text-align:center">
-<img src="misc/figures/tbloss.png" alt="Example Image" align="center" width=400>
+<div align="center">
+<img src="misc/figures/tbloss.png" alt="Example Image" width=400>
 </div>
 
 ### Policy network <a name="policy"></a>
