@@ -19,20 +19,40 @@ Following is a non-exaustive list of important concepts in reinforcement learnin
 
 1. **Agent**: The learner or decision-maker that interacts with the environment. It takes actions and receives rewards based on its actions. In our case, it is the 'alpha generator' modeled by GFlowNet.
 1. **Environment**: The external system with which the agent interacts. It receives actions from the agent and returns observations and rewards. In our case, it is the stock market.
-1. **State**: A snapshot of the environment at a particular time. It contains all the relevant information necessary for decision-making. In our case, it is the sequence of action tokens that forms the the mathematical expression of an alpha factor. (See [State space](#state))
-1. **Action**: A decision made by the agent that affects the state of the environment. The set of all possible actions is called the action space.
-1. **Reward**: A scalar feedback signal received by the agent from the environment. It indicates how good or bad the action taken by the agent was.  
-1. **Policy**: The strategy or rule that the agent uses to select actions based on states. It defines the mapping from states to actions.
-
-See [Methodology](#Methodology) for detailed description of how these components are defined in this project.
+1. **State**: A snapshot of the environment at a particular time. It contains all the relevant information necessary for decision-making. The state at time $t$ is usually denoted as $s_t$. In our case, it is the sequence of action tokens that forms the the mathematical expression of an alpha factor (see [State space](#state) for details). 
+1. **Action**: A decision made by the agent that affects the state of the environment. The set of all possible actions is called the action space. The action at time $t$ is usually denoted as $a_t$. In our case, the action space consists of mathematical operators and market data features (see [Action space](#action) for details). 
+1. **Reward**: A scalar feedback signal received by the agent from the environment. It indicates how good or bad the action taken by the agent was.  In our case, it is defined as the square of information correlation (IC) penalized by the missing data proportion in the generated alpha factor (see [Reward](#reward) for details).  
+1. **Policy**: The strategy or rule that the agent uses to select actions based on states. It defines the mapping from states to actions. The probability function that describes the policy is usually denoted as $\pi(a_t|s_t)$. (See [Policy](#policy) for details.)
 
 ### What are GFlowNet models?
 
-A GFlowNet is a trained stochastic policy or generative model, trained such that it samples objects $x$ through a sequence of constructive steps, with probability proportional to a reward function $R(x)$, where $R$ is a non-negative integrable function. After proper training sessions, a GFlowNet is expected to be able to sample a diversity of solutions $x$ that have a high value of $R(x)$. 
+A GFlowNet is a trained stochastic policy or generative model, trained such that it samples objects $x$ through a sequence of constructive steps (i.e., actions), with probability proportional to a reward function $R(x)$, where $R$ is a non-negative integrable function. After proper training sessions, a GFlowNet is expected to be able to sample a **diversity** of solutions $x$ that have a high value of $R(x)$. [[1]](references)
 
-### Why do we choose to apply GFlowNet?
+The word ‘flow’ in GFlowNet actually refers to unnormalized probabilities of an action given a state. The proposed approach views the probability assigned to an action given a state as the flow associated with a network whose nodes are states, and outgoing edges from that node are deterministic transitions driven by an action. The total flow into the network is the sum of the rewards in the terminal states (i.e., a partition function) and can be shown to be the flow at the root node (or start state). The proposed algorithm is inspired by Bellman updates and converges when the incoming and outgoing flow into and out of each state match. [[4]](references)
 
+<div style="text-align:center">
+<img src="misc/figures/gflownet_anim.gif" alt="Example Image" align="center">
+<figcaption>llustration of the flow network. Source: [1] </figcaption>
+</div>
 
+\
+A neural net can be used to sample each of these forward-going constructive actions, one at a time. An object $x$ is done being constructed when a special "exit" action or a deterministic criterion of the state (e.g., $x$ has exactly $n$ elements) has been triggered, when we have reached a terminal state $x$, and after which we can get a reward $R(x)$.
+
+PS: Reward can only be gained after reaching terminal state of a trajectory is the so-called *episodic setting* of RL.
+
+<div style="text-align:center">
+<img src="misc/figures/gfn-action.png" alt="Example Image" align="center">
+<figcaption>The most basic component of a GFlowNet. Source: [1] </figcaption>
+
+</div>
+
+### Why GFlowNet over other models?
+
+GFlowNet is advantageous in the scenarios where exploration and diversity of the generated candidates are important.
+
+Traditional RL: Tries to generate the single highest-reward sequence of actions.
+GFlowNet: Samples a distribution of trajectories whose probability is proportional to a given positive return or reward function. 
+Also, GFN can handle tricky cases where different trajectories can yield the same final state.
 
 ## Dataset
 sss
@@ -56,20 +76,31 @@ Implementation of the methodology can be found in `src/` folder. An example trai
 
 ### Loss function
 
-### Feature extraction
+Several training objectives have already been proposed for GFlowNets, all aiming at constructing a neural net that outputs the flows and/or the transition probabilities of the forward policy such that they define a proper flow, that matches the desired flow through the terminal states $x$, i.e., $F(x)=R(x)$.
 
-### Policy network architecture
+The amount of flow reaching to a *terminal state* should be proportional to the positive return or reward function, i.e., for a terminal state $x$:
+$$\pi(x) \approx \frac{R(x)}{Z} = \frac{R(x)}{\sum_{x'\in\chi} R(x')} \propto R(x) $$
+
+
+
+
+### Policy network <a name="policy"></a>
 
 ## Future Work
 
 
-## References:
-- **Publications:**
-    1. Bengio, Emmanuel, et al. "Flow network based generative models for non-iterative diverse candidate generation." Advances in Neural Information Processing Systems 34 (2021): 27381-27394.
-    1. Bengio, Yoshua, et al. "Gflownet foundations." Journal of Machine Learning Research 24.210 (2023): 1-55.
-    1. Yu, Shuo, et al. "Generating Synergistic Formulaic Alpha Collections via Reinforcement Learning." Proceedings of the 29th ACM SIGKDD Conference on Knowledge Discovery and Data Mining. 2023.
+## References: <a name="references"></a>
+
 - **Scripts and websites:**
+
     1. The GFlowNet Tutorial: https://milayb.notion.site/The-GFlowNet-Tutorial-95434ef0e2d94c24aab90e69b30be9b3
-    1. The smiley face tutorial in GFlowNet GitHub repo: https://github.com/GFNOrg/torchgfn/blob/master/tutorials/notebooks/intro_gfn_smiley.ipynb
-    1. The AlphaGen framework: https://github.com/RL-MLDM/alphagen/tree/master
+    2. The smiley face tutorial in GFlowNet GitHub repo: https://github.com/GFNOrg/torchgfn/blob/master/tutorials/notebooks/intro_gfn_smiley.ipynb
+    3. The AlphaGen framework: https://github.com/RL-MLDM/alphagen/tree/master
+
+- **Publications:**
+
+    4. Bengio, Emmanuel, et al. "Flow network based generative models for non-iterative diverse candidate generation." Advances in Neural Information Processing Systems 34 (2021): 27381-27394.
+    5. Bengio, Yoshua, et al. "Gflownet foundations." Journal of Machine Learning Research 24.210 (2023): 1-55.
+    6. Yu, Shuo, et al. "Generating Synergistic Formulaic Alpha Collections via Reinforcement Learning." Proceedings of the 29th ACM SIGKDD Conference on Knowledge Discovery and Data Mining. 2023.
+
 - **Special thanks** to ChatGPT for helping to draft this README!!!
