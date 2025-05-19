@@ -1,5 +1,18 @@
 # `Alpha-gfn`: Mining formulaic alpha factors with generative flow networks
 
+---
+**Please cite this repository if you utilize any code provided herein.:**
+- **APA style:**  Shen, N. (2024). Alpha-gfn: Mining formulaic alpha factors with generative flow networks. [https://github.com/user/my-project-name](https://github.com/nshen7/alpha-gfn)
+- **BibTeX style:**
+  ```
+  @software{shen2024,
+            author = {Shen, Ning},
+            title = {Alpha-gfn: Mining formulaic alpha factors with generative flow networks},
+            year = {2024},
+            url = {https://github.com/nshen7/alpha-gfn}
+        }
+  ```
+----
 In this repo, we build an application that leverages a deep reinforcement learning framework to mine formulaic alpha factors using generative flow network models (i.e., GFlowNet). Due to industrial NDA, this repo only serves for demonstration purposes; hence, it only includes a simple example using a small amount of training data. 
 
 We give a brief introduction on the fundamental components of the project by answering the following questions. 
